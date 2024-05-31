@@ -4,7 +4,7 @@ const option = {
     username: 'hendrich@hivemq',
     password: "Admin_project1"
 }
-const client = mqtt.connect('wss://f8d608e5d3dc4565972bf7beacf0e4da.s2.eu.hivemq.cloud:8884/mqtt', option);
+const client = mqtt.connect('broker.hivemq.com', option);
 client.on('connect', () => {
     client.publish('skripsi/byhendrich/subscribe', 'Hello, HiveMQ!', (err) => {
         if (err) {

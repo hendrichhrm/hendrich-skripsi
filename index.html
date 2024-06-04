@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Data Logging</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+        
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>MQTT Data Logging</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Temperature</th>
+                <th>Unit</th>
+                <th>Setpoint</th>
+                <th>Sampling</th>
+                <th>Dutycycle</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="mqttData">
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('http://localhost:3000/data');
+            const data = await response.json();
+            const tableBody = document.getElementById('mqttData');
+            tableBody.innerHTML = ''; // Clear existing data
+
+            data.forEach(item => {
+                const newRow = tableBody.insertRow();
+                const tempCell = newRow.insertCell(0);
+                const unitCell = newRow.insertCell(1);
+                const setpointCell = newRow.insertCell(2);
+                const samplingCell = newRow.insertCell(3);
+                const dutycycleCell = newRow.insertCell(4);
+                const timestampCell = newRow.insertCell(5);
+
+                tempCell.appendChild(document.createTextNode(item.temperature));
+                unitCell.appendChild(document.createTextNode(item.unit));
+                setpointCell.appendChild(document.createTextNode(item.setpoint));
+                samplingCell.appendChild(document.createTextNode(item.sampling));
+                dutycycleCell.appendChild(document.createTextNode(item.dutycycle));
+                timestampCell.appendChild(document.createTextNode(new Date(item.timestamp).toLocaleString()));
+            });
+        }
+
+        setInterval(fetchData, 5000); // Fetch data every 5 seconds
+        fetchData(); // Initial fetch
+    </script>
+</body>
+
+</html>

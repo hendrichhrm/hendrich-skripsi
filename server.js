@@ -1,24 +1,26 @@
-const mqtt = require('mqtt');
 const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
+const mqtt = require('mqtt');
+
 const connectToMongoDB = require('./mongo'); // Import koneksi MongoDB
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+const port = 8884;
 
 const mqttBroker = 'mqtt://broker.hivemq.com';
-const mqttTopic = 'skripsi/byhendrich/esptodash';
+const topic_esptodash = 'skripsi/byhendrich/esptodash';
 
 // Koneksi ke MQTT Broker
 const client = mqtt.connect(mqttBroker);
 
-// Menangani koneksi ke MQTT Broker
 client.on('connect', () => {
-    console.log('Connected to MQTT broker');
-    // Subscribe ke topik MQTT
-    client.subscribe(mqttTopic);
+  console.log('Connected to MQTT broker');
+  client.subscribe(topic_esptodash, (err) => {
+    if (err) {
+      console.error('Failed to subscribe to topic:', topic_esptodash);
+    } else {
+      console.log('Subscribed to topic:', topic_esptodash);
+    }
+  });
 });
 
 // Menangani pesan yang diterima dari MQTT Broker
@@ -35,18 +37,31 @@ client.on('message', async(topic, message) => {
     }
 });
 
+client.on('message', (topic, message) => {
+  console.log(`topic: ${topic} sends : ${message.toString()}`);
+});
+
 // Mengirimkan file HTML ke client
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-// Menangani koneksi socket.io dari client
-io.on('connection', (socket) => {
-    console.log('Client connected');
-});
+// Middleware untuk parsing JSON
+app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+// Endpoint untuk mempublikasikan pesan ke MQTT
+app.post('/publish', (req, res) => {
+  const { message } = req.body;
 
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  if (!message) {
+    return res.status(400).send('Message is required');
+  }
+
+  client.publish(topic_esptodash, message, (err) => {
+    if (err) {
+      return res.status(500).send('Failed to publish message');
+    }
+
+    res.status(200).send('Message published successfully');
+  });
 });

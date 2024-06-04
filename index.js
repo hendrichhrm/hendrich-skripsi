@@ -5,14 +5,14 @@ const app = express();
 const port = 8884;
 
 // Konfigurasi MQTT
-const mqttBrokerUrl = 'mqtt://broker.hivemq.com:8884';
+const mqttBrokerUrl = 'mqtt://broker.hivemq.com';
 const mqttOptions = {
   username: 'hendrich@hivemq',
   password: 'Admin_project1',
   protocol: 'mqtts'
 };
-const topicSub = 'skripsi/byhendrich/subscribe';
-const topicPub = 'skripsi/byhendrich/publish';
+const topic_dashtoesp = 'skripsi/byhendrich/dashtoesp';
+const topic_esptodash = 'skripsi/byhendrich/esptodash';
 
 // Membuat client MQTT
 const client = mqtt.connect(mqttBrokerUrl, mqttOptions);
@@ -20,11 +20,11 @@ const client = mqtt.connect(mqttBrokerUrl, mqttOptions);
 // Event handler untuk koneksi MQTT
 client.on('connect', () => {
   console.log('Connected to MQTT broker');
-  client.subscribe(topicSub, (err) => {
+  client.subscribe(topic_dashtoesp, (err) => {
     if (err) {
-      console.error('Failed to subscribe to topic:', topicSub);
+      console.error('Failed to subscribe to topic:', topic_dashtoesp);
     } else {
-      console.log('Subscribed to topic:', topicSub);
+      console.log('Subscribed to topic:', topic_dashtoesp);
     }
   });
 });
@@ -45,7 +45,7 @@ app.post('/publish', (req, res) => {
     return res.status(400).send('Message is required');
   }
 
-  client.publish(topicPub, message, (err) => {
+  client.publish(topic_esptodash, message, (err) => {
     if (err) {
       return res.status(500).send('Failed to publish message');
     }

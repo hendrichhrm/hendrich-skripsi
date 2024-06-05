@@ -10,7 +10,7 @@ const get_message = async() => {
             //     // message: pesan
             // }
         }
-        const response = await fetch('http://localhost:3000/test_subscribe');
+        const response = await fetch('https://hendrich-project.com/data-logging');
         if (!response.ok) {
             throw new Error(`Error in setting the MQTT, error:${response.status}`);
         }

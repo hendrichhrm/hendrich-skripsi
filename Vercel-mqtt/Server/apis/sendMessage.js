@@ -7,10 +7,10 @@ const send_message = async(waktu, nilai) => {
             },
             body: JSON.stringify({
                 tanggal: waktu,
-                array_nilai: nilai
+                value_array: nilai
             })
         }
-        const response = await fetch('http://localhost:3000/test_publish', options);
+        const response = await fetch('https://hendrich-project.com/calibration', options);
         if (!response.ok) {
             throw new Error(`Error in uploading to database`);
         }

@@ -14,6 +14,7 @@ async function publishPesan(req, res) {
     try {
         const { tanggal, value_array } = req.body;
         console.log(value_array);
+        console.log(tanggal);
 
         // Validate and structure the data
         const structuredData = value_array.map(item => ({
@@ -24,7 +25,7 @@ async function publishPesan(req, res) {
             DutyCycle: item.DutyCycle,
         }));
 
-        const coba_upload = await data_value.insertMany({ 'waktu': tanggal, 'nilai': structuredData });
+        const coba_upload = await data_value.insertMany({ 'waktu': tanggal, 'nilai': value_array });
         console.log(coba_upload);
         res.json(coba_upload);
     } catch (error) {

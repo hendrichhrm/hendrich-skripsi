@@ -5,10 +5,6 @@ const get_message = async() => {
             headers: {
                 'Content-type': 'application/json'
             },
-            // body: {
-            //     topik: topic
-            //     // message: pesan
-            // }
         }
         const response = await fetch('https://hendrich-project.com/data-logging');
         if (!response.ok) {

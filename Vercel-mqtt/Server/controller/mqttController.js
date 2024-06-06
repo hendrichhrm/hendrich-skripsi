@@ -4,7 +4,7 @@ const { data_value } = require('../model/data');
 require('dotenv').config();
 
 // Connect to MQTT broker
-const client = mqtt.connect(process.env.LINK_MOCK_MQTT);
+const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
 
 client.on('connect', () => {
     console.log('MQTT client connected');

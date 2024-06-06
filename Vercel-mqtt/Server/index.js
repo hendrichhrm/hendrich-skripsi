@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-mongoose.connect('mongodb+srv://hendrich_mogodb:Admin_project1@project-hendrich.as89plx.mongodb.net/?retryWrites=true&w=majority&appName=project-hendrich', {
+mongoose.connect('mongodb+srv://hendrich_mogodb:Admin_project1@project-hendrich.as89plx.mongodb.net/', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {

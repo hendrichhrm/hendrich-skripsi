@@ -7,7 +7,9 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://hendrich_mogodb:Admin_project1@project-hendrich.as89plx.mongodb.net/';
+const mongoUri = process.env.MONGODB_URI;
+const port = process.env.PORT || 3000;
+
 console.log('MongoDB URI:', mongoUri);
 
 mongoose.connect(mongoUri)
@@ -16,7 +18,7 @@ mongoose.connect(mongoUri)
     })
     .catch((err) => {
         console.error(`Failed to connect to MongoDB: ${err}`);
-    });
+    })
 
 app.use(cors());
 app.use(express.json());

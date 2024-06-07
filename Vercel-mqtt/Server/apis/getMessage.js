@@ -6,7 +6,7 @@ const get_message = async() => {
                 'Content-type': 'application/json'
             },
         }
-        const response = await fetch('https://hendrich-project.com/data-logging');
+        const response = await fetch('http://localhost:3000/skripsi/byhendrich/esptodash');
         if (!response.ok) {
             throw new Error(`Error in setting the MQTT, error:${response.status}`);
         }
